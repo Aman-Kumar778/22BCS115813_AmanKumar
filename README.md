@@ -1,46 +1,161 @@
-# Advanced Programming Sem 6 All Problemset
-### Name: Aman Kumar
-### UID: 22BCS15813
-### Section: 601 B (Fast Learners)
----
-## Day 1
+# Advanced Programming Sem 6 
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+#include <algorithm>
+using namespace std;
 
-| **Problem**                                | **Type** | **Link**                                                                 |
-|--------------------------------------------|----------|---------------------------------------------------------------------------|
-| Remove duplicates from a sorted array      | CW       | [Problem](https://leetcode.com/problems/remove-duplicates-from-sorted-array/) |
-| Implementing insertion sort                | CW       | [Problem](https://www.geeksforgeeks.org/problems/insertion-sort/1)        |
-| Contains duplicate                         | HW       | [Problem](https://leetcode.com/problems/contains-duplicate/description/)  |
-| Two Sum                                    | CW       | [Problem](https://leetcode.com/problems/two-sum/)                         |
-| Jump Game                                  | HW       | [Problem](https://leetcode.com/problems/jump-game/)                       |
-| Majority Element                           | HW       | [Problem](https://leetcode.com/problems/majority-element)                 |
-| Valid Palindrome                           | CW       | [Problem](https://leetcode.com/problems/valid-palindrome/)                |
-| Jump Game 2                                | HW       | [Problem](https://leetcode.com/problems/jump-game-ii)                     |
-| 3Sum                                       | HW       | [Problem](https://leetcode.com/problems/3sum/)                            |
-| Set Matrix Zeroes                          | CW       | [Problem](https://leetcode.com/problems/set-matrix-zeroes/)               |
-| Longest substring without repeating characters | HW    | [Problem](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) |
-| Finding duplicate number                   | HW       | [Problem](https://leetcode.com/problems/find-the-duplicate-number/description/) |
+// 1. Remove Duplicates from a Sorted Array
+int removeDuplicates(vector<int>& nums) {
+    if (nums.empty()) return 0;
+    int sz = 1;
+    for (int i = 1; i < nums.size(); i++) {
+        if (nums[i] != nums[sz - 1]) {
+            nums[sz++] = nums[i];
+        }
+    }
+    return sz;
+}
 
----
+// 2. Implementing Insertion Sort
+void insertionSort(vector<int>& arr) {
+    for (int i = 1; i < arr.size(); i++) {
+        int key = arr[i], j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
 
-## Day 2
+// 3. Contains Duplicate
+bool containsDuplicate(vector<int>& nums) {
+    unordered_set<int> seen;
+    for (int num : nums) {
+        if (!seen.insert(num).second) return true;
+    }
+    return false;
+}
 
-| **Problem**                                | **Type** | **Link**                                                                 |
-|--------------------------------------------|----------|---------------------------------------------------------------------------|
-| Print linked list                          | CW       | [Problem](https://www.geeksforgeeks.org/problems/print-linked-list-elements/0) |
-| Remove duplicates from a sorted list       | CW       | [Problem](https://leetcode.com/problems/remove-duplicates-from-sorted-list) |
-| Reverse a linked list                      | CW       | [Problem](https://leetcode.com/problems/reverse-linked-list/)             |
-| Delete middle node of a list               | CW       | [Problem](https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list) |
-| Merge two sorted linked lists              | CW       | [Problem](https://leetcode.com/problems/merge-two-sorted-lists)           |
-| Remove duplicates from sorted lists 2      | CW       | [Problem](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii) |
-| Detect a cycle in a linked list            | CW       | [Problem](https://leetcode.com/problems/linked-list-cycle)                |
-| Reverse linked list 2                      | CW       | [Problem](https://leetcode.com/problems/reverse-linked-list-ii)           |
-| Rotate a list                              | CW       | [Problem](https://leetcode.com/problems/rotate-list)                      |
-| Merge k sorted lists                       | CW       | [Problem](https://leetcode.com/problems/merge-k-sorted-lists/)            |
-| Sort List                                  | HW       | [Problem](https://leetcode.com/problems/sort-list/description/)           |
+// 4. Two Sum
+vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int, int> map;
+    for (int i = 0; i < nums.size(); i++) {
+        int complement = target - nums[i];
+        if (map.count(complement)) {
+            return {map[complement], i};
+        }
+        map[nums[i]] = i;
+    }
+    return {};
+}
 
+// 5. Jump Game
+bool canJump(vector<int>& nums) {
+    int maxReach = 0;
+    for (int i = 0; i < nums.size(); i++) {
+        if (i > maxReach) return false;
+        maxReach = max(maxReach, nums[i] + i);
+    }
+    return true;
+}
 
-**Note**:  
-- **CW** = Class Work  
-- **HW** = Homework  
+// 6. Majority Element
+int majorityElement(vector<int>& nums) {
+    unordered_map<int, int> map;
+    int count = nums.size() / 2;
+    for (int num : nums) {
+        if (++map[num] > count) return num;
+    }
+    return -1;
+}
 
----
+// 7. Valid Palindrome
+bool isPalindrome(string s) {
+    string cleaned;
+    for (char c : s) {
+        if (isalnum(c)) cleaned += tolower(c);
+    }
+    return equal(cleaned.begin(), cleaned.end(), cleaned.rbegin());
+}
+
+// 8. Jump Game 2
+int jump(vector<int>& nums) {
+    int near = 0, far = 0, jumps = 0;
+    while (far < nums.size() - 1) {
+        int farthest = 0;
+        for (int i = near; i <= far; i++) {
+            farthest = max(farthest, i + nums[i]);
+        }
+        near = far + 1;
+        far = farthest;
+        jumps++;
+    }
+    return jumps;
+}
+
+// 9. 3Sum
+vector<vector<int>> threeSum(vector<int>& nums) {
+    sort(nums.begin(), nums.end());
+    vector<vector<int>> res;
+    for (int i = 0; i < nums.size(); i++) {
+        if (i > 0 && nums[i] == nums[i - 1]) continue;
+        int j = i + 1, k = nums.size() - 1;
+        while (j < k) {
+            int total = nums[i] + nums[j] + nums[k];
+            if (total > 0) {
+                k--;
+            } else if (total < 0) {
+                j++;
+            } else {
+                res.push_back({nums[i], nums[j], nums[k]});
+                while (j < k && nums[j] == nums[j + 1]) j++;
+                j++;
+            }
+        }
+    }
+    return res;
+}
+
+// 10. Set Matrix Zeroes
+void setZeroes(vector<vector<int>>& matrix) {
+    int m = matrix.size(), n = matrix[0].size();
+    vector<bool> row(m, false), col(n, false);
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] == 0) {
+                row[i] = col[j] = true;
+            }
+        }
+    }
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (row[i] || col[j]) matrix[i][j] = 0;
+        }
+    }
+}
+
+// 11. Longest Substring Without Repeating Characters
+int lengthOfLongestSubstring(string s) {
+    unordered_set<char> charSet;
+    int left = 0, maxLength = 0;
+    for (int right = 0; right < s.size(); right++) {
+        while (charSet.count(s[right])) {
+            charSet.erase(s[left++]);
+        }
+        charSet.insert(s[right]);
+        maxLength = max(maxLength, right - left + 1);
+    }
+    return maxLength;
+}
+
+// 12. Find the Duplicate Number
+int findDuplicate(vector<int>& nums) {
+    unordered_set<int> seen;
+    for (int num : nums) {
+        if (!seen.insert(num).second) return num;
+    }
+    return -1;
+}
