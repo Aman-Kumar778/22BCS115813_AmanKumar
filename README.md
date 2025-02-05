@@ -1,12 +1,10 @@
 # Advanced Programming Sem 6 
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <unordered_set>
-#include <algorithm>
-using namespace std;
+
+## Aman Kumar 
+## 22BCS15813
 
 // 1. Remove Duplicates from a Sorted Array
+```
 int removeDuplicates(vector<int>& nums) {
     if (nums.empty()) return 0;
     int sz = 1;
@@ -17,8 +15,9 @@ int removeDuplicates(vector<int>& nums) {
     }
     return sz;
 }
-
+```
 // 2. Implementing Insertion Sort
+```
 void insertionSort(vector<int>& arr) {
     for (int i = 1; i < arr.size(); i++) {
         int key = arr[i], j = i - 1;
@@ -29,8 +28,10 @@ void insertionSort(vector<int>& arr) {
         arr[j + 1] = key;
     }
 }
+```
 
 // 3. Contains Duplicate
+```
 bool containsDuplicate(vector<int>& nums) {
     unordered_set<int> seen;
     for (int num : nums) {
@@ -38,8 +39,10 @@ bool containsDuplicate(vector<int>& nums) {
     }
     return false;
 }
-
+```
 // 4. Two Sum
+
+```
 vector<int> twoSum(vector<int>& nums, int target) {
     unordered_map<int, int> map;
     for (int i = 0; i < nums.size(); i++) {
@@ -51,7 +54,7 @@ vector<int> twoSum(vector<int>& nums, int target) {
     }
     return {};
 }
-
+```
 // 5. Jump Game
 bool canJump(vector<int>& nums) {
     int maxReach = 0;
